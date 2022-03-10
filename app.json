@@ -22,4 +22,4 @@
       "description": "The number of processes to run.",
       "generator": "secret"
     }
-  },
+  }
