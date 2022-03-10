@@ -6,8 +6,8 @@ import httpx
 import tweepy
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from utils.utils import headers
 
+from utils.utils import headers
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -130,10 +130,11 @@ class Kyiv:
         new_tweets = client.user_timeline(screen_name="KyivIndependent", count=10)
         while len(new_tweets) > 0:
             for tweet in new_tweets:
-                parsed_tweet = {'date': tweet.created_at, 'author': tweet.user.name,
-                                'twitter_name': tweet.user.screen_name,
-                                'text': tweet.text, 'number_of_likes': tweet.favorite_count,
-                                'number_of_retweets': tweet.retweet_count}
+                if "⚡" in tweet.text:
+                    parsed_tweet = {'date': tweet.created_at, 'author': tweet.user.name,
+                                    'twitter_name': tweet.user.screen_name,
+                                    'text': tweet.text, 'number_of_likes': tweet.favorite_count,
+                                    'number_of_retweets': tweet.retweet_count}
                 all_tweets.append(parsed_tweet)
             # print("We've got %s tweets so far" % (len(all_tweets)))
             max_id = new_tweets[-1].id - 1
