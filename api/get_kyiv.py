@@ -133,7 +133,7 @@ class Kyiv:
                 if "⚡" in tweet.text:
                     parsed_tweet = {'date': tweet.created_at, 'author': tweet.user.name,
                                     'twitter_name': tweet.user.screen_name,
-                                    'text': tweet.text, 'number_of_likes': tweet.favorite_count,
+                                    'text': tweet.text.split("⚡")[1], 'number_of_likes': tweet.favorite_count,
                                     'number_of_retweets': tweet.retweet_count}
                 all_tweets.append(parsed_tweet)
             # print("We've got %s tweets so far" % (len(all_tweets)))
