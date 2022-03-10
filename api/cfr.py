@@ -36,10 +36,11 @@ class Cfr:
                 }
             )
 
-            # data = {"status": status, "data": result}
+        data = {"status": status, "data": results}
+        
         if status != 200:
             raise Exception("API response: {}".format(status))
-        return results
+        return data
 
     @staticmethod
     def cfr_status():
