@@ -2,13 +2,14 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.tweets_scrape import get_kyiv
+from api.get_kyiv import Kyiv
+from api.cfr import Cfr
 from ratelimit import limits
 
 app = FastAPI(
     title="Get Kyiv",
     description="Scrapes news about Ukraine Invasion",
-    version="1.0.0",
+    version="1.0.1",
     docs_url="/",
     redoc_url=None,
 )
@@ -25,11 +26,33 @@ app.add_middleware(
 
 TWO_MINUTES = 150
 
+# init classes
+kyiv = Kyiv()
+cfr = Cfr()
+
 
 @limits(calls=250, period=TWO_MINUTES)
-@app.get("/tweets/KyivIndependent", tags=["News"])
-def ukraine_news():
-    return get_kyiv()
+@app.get("/tweets/kyivindependent", tags=["Twitter"])
+def kyiv_independent():
+    return kyiv.get_kyiv()
+
+
+@limits(calls=250, period=TWO_MINUTES)
+@app.get("/news/kyivindependent", tags=["News"])
+def kyiv_independent_news():
+    return kyiv.kyiv_news()
+
+
+@limits(calls=250, period=TWO_MINUTES)
+@app.get("/news/cfr/ukraine", tags=["News"])
+def global_conflict_tracker():
+    return cfr.cfr_conflict_news()
+
+
+@limits(calls=250, period=TWO_MINUTES)
+@app.get("/news/cfr/status", tags=["News"])
+def global_conflict_tracker_status():
+    return cfr.cfr_status()
 
 
 if __name__ == "__main__":
