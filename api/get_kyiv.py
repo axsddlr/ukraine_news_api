@@ -118,9 +118,11 @@ class Kyiv:
                 }
             )
 
+        data = {"status": status, "data": result}
+
         if status != 200:
             raise Exception("API response: {}".format(status))
-        return result
+        return data
 
     @staticmethod
     def get_kyiv():
