@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.get_kyiv import Kyiv
 from api.cfr import Cfr
+from api.bbc import BBC
 from ratelimit import limits
 
 app = FastAPI(
@@ -29,6 +30,7 @@ TWO_MINUTES = 150
 # init classes
 kyiv = Kyiv()
 cfr = Cfr()
+bbc = BBC()
 
 
 @limits(calls=250, period=TWO_MINUTES)
@@ -53,6 +55,12 @@ def global_conflict_tracker():
 @app.get("/news/cfr/status", tags=["News"])
 def global_conflict_tracker_status():
     return cfr.cfr_status()
+
+
+@limits(calls=250, period=TWO_MINUTES)
+@app.get("/news/bbc/latest", tags=["News"])
+def bbc_ukraine_latest_updates():
+    return bbc.bbc_ukraine_news()
 
 
 if __name__ == "__main__":
